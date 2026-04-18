@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مركز نهج العملي — منصة المعرفة والمشاريع</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: #f5f5f0;
+    color: #1a1a18;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f0;
+    --bg-tertiary: #eeede8;
+    --text-primary: #1a1a18;
+    --text-secondary: #73726c;
+    --border: rgba(0,0,0,0.1);
+    --border-hover: rgba(0,0,0,0.2);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-primary: #1e1e1c;
+      --bg-secondary: #2a2a28;
+      --bg-tertiary: #141412;
+      --text-primary: #e8e6de;
+      --text-secondary: #9c9a92;
+      --border: rgba(255,255,255,0.1);
+      --border-hover: rgba(255,255,255,0.2);
+    }
+    body { background: #141412; color: #e8e6de; }
+  }
+
+  /* ===== PAGE SYSTEM ===== */
+  .page { display: none; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* ===== LANDING PAGE ===== */
+  #page-landing {
+    background: linear-gradient(135deg, #0d2d4a 0%, #1a4a7a 50%, #0f3560 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    padding: 40px 20px;
+  }
+
+  #page-landing::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 30% 40%, rgba(200,146,42,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 70%, rgba(255,255,255,0.03) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .landing-header { text-align: center; margin-bottom: 56px; position: relative; }
+
+  .landing-logo {
+    width: 80px; height: 80px;
+    background: rgba(200,146,42,0.15);
+    border: 2px solid rgba(200,146,42,0.4);
+    border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px; font-size: 36px;
+  }
+
+  .landing-header h1 { font-size: 36px; font-weight: 900; color: #ffffff; margin-bottom: 8px; }
+  .landing-header .subtitle { font-size: 15px; color: rgba(255,255,255,0.55); }
+
+  .landing-cards { display: flex; gap: 24px; position: relative; z-index: 1; flex-wrap: wrap; justify-content: center; }
+
+  .landing-card {
+    width: 260px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px; padding: 36px 28px;
+    cursor: pointer; transition: all 0.3s ease;
+    text-align: center; position: relative; overflow: hidden;
+  }
+
+  .landing-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .landing-card.blue::before { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+  .landing-card.gold::before { background: linear-gradient(90deg, #c8922a, #f0b843); }
+
+  .landing-card:hover { transform: translateY(-6px); background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.22); }
+
+  .card-icon { font-size: 48px; margin-bottom: 16px; display: block; }
+  .landing-card h2 { font-size: 20px; font-weight: 700; color: #ffffff; margin-bottom: 10px; }
+  .landing-card p { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.7; }
+
+  .card-arrow {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);
+    font-size: 18px; margin-top: 20px; transition: all 0.3s;
+  }
+  .landing-card:hover .card-arrow { background: rgba(255,255,255,0.2); color: #ffffff; }
+
+  /* ===== LOGIN PAGE ===== */
+  #page-login { background: var(--bg-secondary); display: flex; flex-direction: column; min-height: 100vh; }
+
+  .login-topbar {
+    background: var(--bg-primary);
+    border-bottom: 0.5px solid var(--border);
+    padding: 16px 32px;
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .back-btn {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--text-secondary);
+    cursor: pointer; padding: 6px 12px;
+    border-radius: 8px; border: 0.5px solid var(--border);
+    background: transparent; transition: all 0.2s;
+    font-family: 'Cairo', sans-serif;
+  }
+  .back-btn:hover { background: var(--bg-secondary); color: var(--text-primary); }
+
+  .login-section-title { font-size: 14px; font-weight: 600; color: var(--text-secondary); margin-right: 8px; }
+
+  .login-content { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
+
+  .login-box {
+    background: var(--bg-primary);
+    border: 0.5px solid var(--border);
+    border-radius: 20px; padding: 40px;
+    width: 100%; max-width: 440px;
+  }
+
+  .login-box h2 { font-size: 22px; font-weight: 700; margin-bottom: 6px; color: var(--text-primary); }
+  .login-box .login-sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 32px; }
+
+  .users-grid { display: flex; flex-direction: column; gap: 10px; }
+
+  .user-card {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px;
+    border: 0.5px solid var(--border);
+    border-radius: 12px; cursor: pointer; transition: all 0.2s;
+    background: transparent; width: 100%; text-align: right;
+    font-family: 'Cairo', sans-serif;
+  }
+  .user-card:hover { background: var(--bg-secondary); border-color: var(--border-hover); }
+
+  .user-avatar {
+    width: 42px; height: 42px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; flex-shrink: 0;
+  }
+  .avatar-km { background: #e8f0fb; color: #1a4a7a; }
+  .avatar-pm { background: #fef3e2; color: #c8922a; }
+
+  .user-info { flex: 1; }
+  .user-name { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+  .user-role { font-size: 12px; color: var(--text-secondary); }
+
+  .user-badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 500; }
+  .badge-km { background: #e8f0fb; color: #1a4a7a; }
+  .badge-pm { background: #fef3e2; color: #c8922a; }
+
+  /* ===== APP SHELL ===== */
+  #page-app { display: flex; flex-direction: column; min-height: 100vh; background: var(--bg-secondary); }
+
+  .app-topbar {
+    background: #0d2d4a; color: #fff;
+    padding: 0 24px; height: 56px;
+    display: flex; align-items: center; gap: 16px;
+    position: sticky; top: 0; z-index: 100; flex-shrink: 0;
+  }
+
+  .app-logo-text { font-size: 16px; font-weight: 700; color: #fff; }
+  .app-logo-sub { font-size: 11px; color: rgba(255,255,255,0.5); }
+  .topbar-divider { width: 1px; height: 28px; background: rgba(255,255,255,0.15); margin: 0 4px; }
+
+  .topbar-nav { display: flex; gap: 4px; flex: 1; flex-wrap: wrap; }
+
+  .topbar-nav-btn {
+    padding: 6px 14px; border-radius: 8px;
+    font-size: 13px; font-weight: 500;
+    color: rgba(255,255,255,0.65);
+    cursor: pointer; border: none; background: transparent;
+    font-family: 'Cairo', sans-serif; transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .topbar-nav-btn.active, .topbar-nav-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+  .topbar-user { display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(255,255,255,0.8); }
+
+  .topbar-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(200,146,42,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: #f0b843; cursor: pointer;
+  }
+
+  .logout-btn {
+    padding: 5px 12px; border-radius: 7px; font-size: 12px;
+    color: rgba(255,255,255,0.5); cursor: pointer;
+    border: 0.5px solid rgba(255,255,255,0.15); background: transparent;
+    font-family: 'Cairo', sans-serif; transition: all 0.2s;
+  }
+  .logout-btn:hover { color: #fff; border-color: rgba(255,255,255,0.3); }
+
+  .app-content { flex: 1; overflow: auto; }
+
+  .view { display: none; padding: 24px; }
+  .view.active { display: block; }
+
+  .section-header { margin-bottom: 20px; }
+  .section-title { font-size: 20px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+  .section-sub { font-size: 13px; color: var(--text-secondary); }
+
+  /* STAT CARDS */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 14px; margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: var(--bg-primary);
+    border: 0.5px solid var(--border);
+    border-radius: 14px; padding: 16px 18px;
+    position: relative; overflow: hidden;
+  }
+  .stat-card::before {
+    content: ''; position: absolute;
+    top: 0; right: 0; width: 3px; height: 100%;
+    border-radius: 0 14px 14px 0;
+  }
+  .stat-card.blue::before { background: #3b82f6; }
+  .stat-card.gold::before { background: #c8922a; }
+  .stat-card.green::before { background: #16a34a; }
+  .stat-card.red::before { background: #dc2626; }
+  .stat-card.purple::before { background: #7c3aed; }
+
+  .stat-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; font-weight: 500; }
+  .stat-value { font-size: 28px; font-weight: 700; color: var(--text-primary); line-height: 1; margin-bottom: 4px; }
+  .stat-sub { font-size: 11px; color: var(--text-secondary); }
+
+  /* TABLE */
+  .table-container {
+    background: var(--bg-primary);
+    border: 0.5px solid var(--border);
+    border-radius: 14px; overflow: hidden; margin-bottom: 24px;
+  }
+
+  .table-header {
+    padding: 16px 20px;
+    border-bottom: 0.5px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap;
+  }
+
+  .table-title { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+  .table-controls { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .filter-select, .search-input {
+    padding: 5px 10px;
+    border: 0.5px solid var(--border);
+    border-radius: 8px; font-size: 12px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-family: 'Cairo', sans-serif;
+    cursor: pointer; outline: none;
+  }
+  .search-input { width: 160px; }
+
+  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+  .data-table th {
+    background: var(--bg-secondary);
+    padding: 10px 14px; text-align: right;
+    font-weight: 600; font-size: 12px;
+    color: var(--text-secondary);
+    border-bottom: 0.5px solid var(--border);
+    white-space: nowrap; cursor: pointer; user-select: none;
+  }
+  .data-table th:hover { color: var(--text-primary); }
+
+  .data-table td {
+    padding: 11px 14px;
+    border-bottom: 0.5px solid var(--border);
+    color: var(--text-primary); vertical-align: middle;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--bg-secondary); }
+
+  /* STATUS BADGES */
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 600; white-space: nowrap;
+  }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .s-active { background: #e8f5ee; color: #15803d; }
+  .s-active .status-dot { background: #16a34a; }
+  .s-completed { background: #e8f0fb; color: #1a4a7a; }
+  .s-completed .status-dot { background: #2563eb; }
+  .s-delayed { background: #fef2f2; color: #dc2626; }
+  .s-delayed .status-dot { background: #dc2626; }
+  .s-pending { background: #fef9e7; color: #92400e; }
+  .s-pending .status-dot { background: #d97706; }
+  .s-suspended { background: #f5f3ff; color: #6d28d9; }
+  .s-suspended .status-dot { background: #7c3aed; }
+
+  /* PROGRESS */
+  .progress-bar {
+    height: 6px; background: var(--bg-secondary);
+    border-radius: 3px; overflow: hidden; width: 90px;
+  }
+  .progress-fill { height: 100%; border-radius: 3px; background: #2563eb; }
+
+  /* SPEED */
+  .speed-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 24px; }
+
+  .speed-card {
+    background: var(--bg-primary);
+    border: 0.5px solid var(--border);
+    border-radius: 14px; padding: 16px 18px;
+  }
+
+  .speed-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .speed-proj-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+  .speed-value { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .speed-label { font-size: 11px; color: var(--text-secondary); }
+
+  .speed-meter { position: relative; height: 8px; background: var(--bg-secondary); border-radius: 4px; margin-top: 10px; }
+  .speed-fill { height: 100%; border-radius: 4px; }
+  .speed-fast { background: #16a34a; }
+  .speed-med { background: #d97706; }
+  .speed-slow { background: #dc2626; }
+
+  /* KM CARDS */
+  .km-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-bottom: 24px; }
+
+  .km-card {
+    background: var(--bg-primary);
+    border: 0.5px solid var(--border);
+    border-radius: 14px; padding: 18px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .km-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+
+  .km-card-type {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 20px; margin-bottom: 10px;
+  }
+  .type-report { background: #e8f0fb; color: #1a4a7a; }
+  .type-guide { background: #e8f5ee; color: #15803d; }
+  .type-template { background: #fef3e2; color: #92400e; }
+  .type-research { background: #f5f3ff; color: #6d28d9; }
+  .type-tool { background: #fef2f2; color: #dc2626; }
+  .type-training { background: #f0fdfa; color: #0f766e; }
+
+  .km-card-title { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; line-height: 1.4; }
+  .km-card-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .km-card-footer { display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--text-secondary); }
+
+  /* CHARTS */
+  .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+
+  .chart-box {
+    background: var(--bg-primary);
+    border: 0.5px solid var(--border);
+    border-radius: 14px; padding: 18px;
+  }
+  .chart-box-title { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 16px; }
+
+  .bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 120px; }
+  .bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; justify-content: flex-end; }
+  .bar { width: 100%; border-radius: 4px 4px 0 0; min-height: 4px; transition: all 0.4s; cursor: pointer; }
+  .bar:hover { filter: brightness(1.15); }
+  .bar-label { font-size: 10px; color: var(--text-secondary); text-align: center; }
+  .bar-val { font-size: 11px; font-weight: 600; color: var(--text-primary); }
+
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-secondary); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* TOOLS */
+  .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+
+  .tool-card {
+    background: var(--bg-primary);
+    border: 0.5px solid var(--border);
+    border-radius: 12px; padding: 16px;
+    text-align: center; cursor: pointer; transition: all 0.2s;
+  }
+  .tool-card:hover { border-color: var(--border-hover); background: var(--bg-secondary); }
+  .tool-icon { font-size: 28px; margin-bottom: 8px; }
+  .tool-name { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+  .tool-desc { font-size: 11px; color: var(--text-secondary); }
+
+  /* ALERTS */
+  .alert-card {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 16px; border-radius: 10px; margin-bottom: 8px; font-size: 13px;
+  }
+  .alert-warning { background: #fef9e7; color: #92400e; border: 0.5px solid #fde68a; }
+  .alert-info { background: #e8f0fb; color: #1a4a7a; border: 0.5px solid #bfdbfe; }
+  .alert-success { background: #e8f5ee; color: #15803d; border: 0.5px solid #bbf7d0; }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-right: 24px; }
+  .timeline::before {
+    content: ''; position: absolute;
+    right: 8px; top: 0; bottom: 0;
+    width: 1px; background: var(--border);
+  }
+  .timeline-item { position: relative; padding-bottom: 16px; }
+  .timeline-item::before {
+    content: ''; position: absolute;
+    right: -20px; top: 4px;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #2563eb;
+    border: 2px solid var(--bg-primary);
+  }
+  .timeline-date { font-size: 11px; color: var(--text-secondary); margin-bottom: 2px; }
+  .timeline-text { font-size: 13px; color: var(--text-primary); }
+
+  /* FORM */
+  .upload-form {
+    background: var(--bg-primary);
+    border: 0.5px solid var(--border);
+    border-radius: 14px; padding: 24px; margin-bottom: 24px;
+  }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+
+  .form-input, .form-select, .form-textarea {
+    padding: 8px 12px;
+    border: 0.5px solid var(--border);
+    border-radius: 9px; font-size: 13px;
+    background: var(--bg-secondary); color: var(--text-primary);
+    font-family: 'Cairo', sans-serif; outline: none; transition: border-color 0.2s;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: #2563eb; }
+  .form-textarea { resize: vertical; min-height: 80px; }
+
+  .btn-primary {
+    padding: 10px 24px; background: #1a4a7a; color: #fff;
+    border: none; border-radius: 10px; font-size: 13px; font-weight: 600;
+    cursor: pointer; font-family: 'Cairo', sans-serif; transition: background 0.2s;
+  }
+  .btn-primary:hover { background: #0d3560; }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 640px) {
+    .chart-row, .two-col, .form-grid { grid-template-columns: 1fr; }
+    .landing-cards { flex-direction: column; }
+    .app-topbar { flex-wrap: wrap; height: auto; padding: 10px 16px; gap: 8px; }
+    .topbar-nav { gap: 2px; }
+    .topbar-nav-btn { padding: 4px 8px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: LANDING -->
+<div id="page-landing" class="page active">
+  <div class="landing-header">
+    <div class="landing-logo">🏛️</div>
+    <h1>مركز نهج العملي</h1>
+    <div class="subtitle">منصة إدارة المعرفة والمشاريع المتكاملة</div>
+  </div>
+  <div class="landing-cards">
+    <div class="landing-card blue" onclick="goToLogin('km')">
+      <span class="card-icon">📚</span>
+      <h2>إدارة المعرفة</h2>
+      <p>مستودع المنتجات المعرفية، التقارير، والأدلة الإرشادية للمركز</p>
+      <div class="card-arrow">←</div>
+    </div>
+    <div class="landing-card gold" onclick="goToLogin('pm')">
+      <span class="card-icon">📊</span>
+      <h2>إدارة المشاريع</h2>
+      <p>متابعة مشاريع 2021–2026 مع لوحة تحكم شاملة وأدوات تحليلية</p>
+      <div class="card-arrow">←</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2: LOGIN -->
+<div id="page-login" class="page">
+  <div class="login-topbar">
+    <button class="back-btn" onclick="goBack()">← رجوع</button>
+    <span class="login-section-title" id="login-section-label"></span>
+  </div>
+  <div class="login-content">
+    <div class="login-box">
+      <h2>تسجيل الدخول</h2>
+      <div class="login-sub">اختر اسمك للدخول إلى المنصة</div>
+      <div class="users-grid" id="users-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3: APP -->
+<div id="page-app" class="page">
+  <div class="app-topbar">
+    <div>
+      <div class="app-logo-text">نهج العملي</div>
+      <div class="app-logo-sub">منصة المعرفة والمشاريع</div>
+    </div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-nav" id="topbar-nav"></div>
+    <div class="topbar-user">
+      <div class="topbar-avatar" id="user-avatar-top"></div>
+      <span id="user-name-top"></span>
+      <button class="logout-btn" onclick="logout()">خروج</button>
+    </div>
+  </div>
+  <div class="app-content" id="app-content"></div>
+</div>
+
+<script>
+let currentSection = 'km';
+let currentUser = null;
+let sortField = 'id', sortAsc = true;
+let currentProjects = [];
+
+const USERS = {
+  km: [
+    { id: 'bassam', name: 'بسام المجيدي', role: 'مدير إدارة المعرفة', initials: 'بم', type: 'km' }
+  ],
+  pm: [
+    { id: 'hamad', name: 'حمد البسام', role: 'مدير مشاريع', initials: 'حب', type: 'pm' },
+    { id: 'abdullah', name: 'عبدالله الرشيد', role: 'مدير مشاريع', initials: 'عر', type: 'pm' },
+    { id: 'ahmad', name: 'أحمد التميمي', role: 'مدير مشاريع', initials: 'أت', type: 'pm' }
+  ]
+};
+
+const PROJECTS = [
+  { id:1,  name:'تطوير منهجية نهج التفكير الاستراتيجي',        partner:'وزارة الاقتصاد',          region:'الرياض',  manager:'حمد البسام',      track:'تطوير القدرات',    amount:850000,  status:'active',    year:2024, start:'2024-01-15', progress:65  },
+  { id:2,  name:'برنامج التميز المؤسسي للقطاع العام',           partner:'وزارة الموارد البشرية',   region:'جدة',     manager:'عبدالله الرشيد',  track:'التميز المؤسسي',   amount:1200000, status:'active',    year:2024, start:'2024-02-01', progress:48  },
+  { id:3,  name:'تصميم إطار إدارة الأداء الحكومي',              partner:'ديوان المظالم',           region:'الرياض',  manager:'أحمد التميمي',    track:'إدارة الأداء',     amount:650000,  status:'completed', year:2023, start:'2023-03-01', progress:100 },
+  { id:4,  name:'بناء نموذج الكفاءات الوظيفية',                  partner:'وزارة التعليم',           region:'الرياض',  manager:'حمد البسام',      track:'تطوير القدرات',    amount:980000,  status:'active',    year:2024, start:'2024-03-10', progress:32  },
+  { id:5,  name:'مشروع التحول الرقمي للخدمات الحكومية',         partner:'هيئة الحكومة الرقمية',   region:'الرياض',  manager:'عبدالله الرشيد',  track:'التحول الرقمي',    amount:1500000, status:'delayed',   year:2023, start:'2023-06-01', progress:71  },
+  { id:6,  name:'تطوير منظومة القيادة والإشراف',                 partner:'وزارة الصحة',            region:'الدمام',  manager:'أحمد التميمي',    track:'القيادة والإشراف', amount:720000,  status:'active',    year:2025, start:'2025-01-20', progress:15  },
+  { id:7,  name:'إعداد خارطة طريق التطوير التنظيمي',            partner:'وزارة البيئة',           region:'الرياض',  manager:'حمد البسام',      track:'التطوير التنظيمي', amount:430000,  status:'completed', year:2022, start:'2022-02-01', progress:100 },
+  { id:8,  name:'بناء منظومة إدارة الابتكار المؤسسي',           partner:'هيئة الابتكار',          region:'جدة',     manager:'عبدالله الرشيد',  track:'الابتكار المؤسسي', amount:890000,  status:'pending',   year:2025, start:'2025-02-01', progress:5   },
+  { id:9,  name:'مشروع رفع كفاءة العمليات الإدارية',             partner:'أمانة منطقة الرياض',     region:'الرياض',  manager:'أحمد التميمي',    track:'كفاءة العمليات',   amount:560000,  status:'active',    year:2025, start:'2025-03-01', progress:8   },
+  { id:10, name:'تصميم برامج التدريب والتطوير المتقدمة',         partner:'وزارة الاقتصاد',         region:'الرياض',  manager:'حمد البسام',      track:'تطوير القدرات',    amount:340000,  status:'suspended', year:2021, start:'2021-05-01', progress:45  },
+  { id:11, name:'مشروع تطوير الاستراتيجية الوطنية للبيانات',    partner:'هيئة الاتصالات',         region:'الرياض',  manager:'عبدالله الرشيد',  track:'التحول الرقمي',    amount:1100000, status:'completed', year:2022, start:'2022-07-01', progress:100 },
+  { id:12, name:'بناء الإطار الوطني لتقييم الأداء المؤسسي',      partner:'مجلس الشورى',            region:'الرياض',  manager:'أحمد التميمي',    track:'إدارة الأداء',     amount:780000,  status:'active',    year:2026, start:'2026-01-01', progress:0   },
+];
+
+const KM_PRODUCTS = [
+  { id:1, title:'دليل إدارة المعرفة المؤسسية',                    type:'دليل',   desc:'إطار شامل لتطبيق ممارسات إدارة المعرفة في المنظمات',                   date:'2025-03-15', downloads:47  },
+  { id:2, title:'تقرير قياس المعرفة التنظيمية 2024',              type:'تقرير',  desc:'نتائج قياس وتقييم المعرفة المؤسسية للمركز عام 2024',                   date:'2025-01-20', downloads:63  },
+  { id:3, title:'نموذج توثيق دروس مستفادة',                       type:'نموذج',  desc:'قالب معياري لتوثيق الدروس المستفادة من المشاريع',                     date:'2024-11-10', downloads:120 },
+  { id:4, title:'بحث: التعلم التنظيمي في القطاع العام',           type:'بحث',    desc:'دراسة معمقة حول آليات التعلم في المنظمات الحكومية',                   date:'2024-09-05', downloads:38  },
+  { id:5, title:'أداة تقييم نضج إدارة المعرفة',                    type:'أداة',   desc:'استبانة تفاعلية لتقييم مستوى نضج المعرفة المؤسسية',                  date:'2025-02-28', downloads:85  },
+  { id:6, title:'برنامج تدريبي: أساسيات إدارة المعرفة',           type:'تدريب',  desc:'محتوى تدريبي كامل لتأهيل المختصين في إدارة المعرفة',                  date:'2024-12-01', downloads:92  },
+  { id:7, title:'تقرير المشهد المعرفي لمشاريع نهج 2023-2024',    type:'تقرير',  desc:'تحليل شامل للمعرفة المتراكمة من مشاريع المركز',                       date:'2025-04-01', downloads:29  },
+  { id:8, title:'دليل توثيق الممارسات الجيدة',                     type:'دليل',   desc:'منهجية احترافية لرصد وتوثيق أفضل الممارسات المؤسسية',                date:'2024-08-15', downloads:67  },
+];
+
+// ===== NAVIGATION =====
+function goToLogin(section) {
+  currentSection = section;
+  document.getElementById('login-section-label').textContent = section === 'km' ? 'إدارة المعرفة' : 'إدارة المشاريع';
+  const list = document.getElementById('users-list');
+  list.innerHTML = '';
+  USERS[section].forEach(u => {
+    const div = document.createElement('button');
+    div.className = 'user-card';
+    div.onclick = () => loginAs(u);
+    div.innerHTML = `
+      <div class="user-avatar ${section === 'km' ? 'avatar-km' : 'avatar-pm'}">${u.initials}</div>
+      <div class="user-info">
+        <div class="user-name">${u.name}</div>
+        <div class="user-role">${u.role}</div>
+      </div>
+      <span class="user-badge ${section === 'km' ? 'badge-km' : 'badge-pm'}">${section === 'km' ? 'إدارة المعرفة' : 'إدارة مشاريع'}</span>
+    `;
+    list.appendChild(div);
+  });
+  showPage('page-login');
+}
+
+function loginAs(user) {
+  currentUser = user;
+  buildApp();
+  showPage('page-app');
+}
+
+function logout() { currentUser = null; showPage('page-landing'); }
+function goBack() { showPage('page-landing'); }
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
+  const t = document.getElementById(id);
+  t.classList.add('active');
+  t.style.display = id === 'page-landing' ? 'flex' : 'block';
+  if (id === 'page-landing') { t.style.flexDirection = 'column'; t.style.alignItems = 'center'; t.style.justifyContent = 'center'; }
+}
+
+// ===== BUILD APP =====
+function buildApp() {
+  const nav = document.getElementById('topbar-nav');
+  const content = document.getElementById('app-content');
+  document.getElementById('user-avatar-top').textContent = currentUser.initials;
+  document.getElementById('user-name-top').textContent = currentUser.name;
+
+  if (currentUser.type === 'pm') {
+    nav.innerHTML = `
+      <button class="topbar-nav-btn active" onclick="switchView('pm-dashboard', this)">لوحة التحكم</button>
+      <button class="topbar-nav-btn" onclick="switchView('pm-projects', this)">قائمة المشاريع</button>
+      <button class="topbar-nav-btn" onclick="switchView('pm-myprojects', this)">مشاريعي</button>
+      <button class="topbar-nav-btn" onclick="switchView('pm-speed', this)">سرعة الإنجاز</button>
+      <button class="topbar-nav-btn" onclick="switchView('pm-km', this)">المعرفة</button>
+      <button class="topbar-nav-btn" onclick="switchView('pm-tools', this)">الأدوات</button>
+    `;
+    content.innerHTML = buildPMDashboard() + buildPMProjects() + buildPMMyProjects() + buildPMSpeed() + buildPMKM() + buildPMTools();
+  } else {
+    nav.innerHTML = `
+      <button class="topbar-nav-btn active" onclick="switchView('km-dashboard', this)">لوحة التحكم</button>
+      <button class="topbar-nav-btn" onclick="switchView('km-products', this)">المنتجات المعرفية</button>
+      <button class="topbar-nav-btn" onclick="switchView('km-upload', this)">رفع محتوى</button>
+      <button class="topbar-nav-btn" onclick="switchView('km-analytics', this)">التحليلات</button>
+      <button class="topbar-nav-btn" onclick="switchView('km-tools', this)">الأدوات</button>
+    `;
+    content.innerHTML = buildKMDashboard() + buildKMProducts() + buildKMUpload() + buildKMAnalytics() + buildKMTools();
+  }
+
+  setTimeout(() => { document.querySelector('.view').classList.add('active'); initData(); }, 50);
+}
+
+function switchView(id, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.topbar-nav-btn').forEach(b => b.classList.remove('active'));
+  const t = document.getElementById(id);
+  if (t) t.classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
+// ===== PM VIEWS =====
+function buildPMDashboard() {
+  const my = PROJECTS.filter(p => p.manager === currentUser.name);
+  const active = my.filter(p => p.status === 'active');
+  const completed = my.filter(p => p.status === 'completed');
+  const delayed = my.filter(p => p.status === 'delayed');
+  const total = my.reduce((s,p) => s+p.amount, 0);
+  const years = [2021,2022,2023,2024,2025,2026];
+  const maxY = Math.max(...years.map(y => my.filter(p=>p.year===y).length), 1);
+
+  return `<div class="view" id="pm-dashboard">
+    <div class="section-header">
+      <div class="section-title">مرحباً، ${currentUser.name} 👋</div>
+      <div class="section-sub">لوحة التحكم الرئيسية — مركز نهج العملي</div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card blue"><div class="stat-label">مشاريعي الكلية</div><div class="stat-value">${my.length}</div><div class="stat-sub">2021 – 2026</div></div>
+      <div class="stat-card green"><div class="stat-label">مشاريع نشطة</div><div class="stat-value">${active.length}</div><div class="stat-sub">جارية حالياً</div></div>
+      <div class="stat-card blue"><div class="stat-label">مشاريع منجزة</div><div class="stat-value">${completed.length}</div><div class="stat-sub">مكتملة بنجاح</div></div>
+      <div class="stat-card red"><div class="stat-label">مشاريع متأخرة</div><div class="stat-value">${delayed.length}</div><div class="stat-sub">تحتاج متابعة</div></div>
+      <div class="stat-card gold"><div class="stat-label">إجمالي القيمة</div><div class="stat-value">${(total/1000000).toFixed(1)}م</div><div class="stat-sub">ريال سعودي</div></div>
+    </div>
+    <div class="two-col">
+      <div class="chart-box">
+        <div class="chart-box-title">توزيع المشاريع حسب الحالة</div>
+        <div style="display:flex;align-items:center;gap:20px;justify-content:center">
+          <div style="position:relative;width:100px;height:100px">
+            <canvas id="donut-pm" width="100" height="100"></canvas>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+              <div style="font-size:22px;font-weight:700;color:var(--text-primary)">${my.length}</div>
+              <div style="font-size:10px;color:var(--text-secondary)">مشروع</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>نشط (${active.length})</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#2563eb"></div>منجز (${completed.length})</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>متأخر (${delayed.length})</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#d97706"></div>معلق (${my.filter(p=>p.status==='pending').length})</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#7c3aed"></div>موقوف (${my.filter(p=>p.status==='suspended').length})</div>
+          </div>
+        </div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-box-title">المشاريع حسب السنة</div>
+        <div class="bar-chart">
+          ${years.map(y => {
+            const c = my.filter(p=>p.year===y).length;
+            const h = c ? Math.max(16, Math.round(c/maxY*100)) : 4;
+            return `<div class="bar-group"><div class="bar-val">${c}</div><div class="bar" style="height:${h}px;background:${c?'#2563eb':'var(--bg-tertiary)'}"></div><div class="bar-label">${y}</div></div>`;
+          }).join('')}
+        </div>
+      </div>
+    </div>
+    <div class="chart-box" style="margin-bottom:24px">
+      <div class="chart-box-title">تنبيهات ومتابعات</div>
+      ${delayed.map(p=>`<div class="alert-card alert-warning">⚠️ مشروع <strong>${p.name}</strong> متأخر — يحتاج مراجعة عاجلة</div>`).join('')}
+      ${active.filter(p=>p.progress<20).map(p=>`<div class="alert-card alert-info">ℹ️ مشروع <strong>${p.name}</strong> في مراحله الأولى (${p.progress}%)</div>`).join('')}
+      <div class="alert-card alert-success">✅ لديك ${completed.length} مشاريع منجزة — أداء ممتاز!</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-box-title">آخر التحديثات</div>
+      <div class="timeline">
+        <div class="timeline-item"><div class="timeline-date">اليوم</div><div class="timeline-text">تسجيل دخول مدير المشروع ${currentUser.name}</div></div>
+        <div class="timeline-item"><div class="timeline-date">هذا الأسبوع</div><div class="timeline-text">تحديث تقرير الإنجاز لمشروع "${active[0]?.name||'—'}"</div></div>
+        <div class="timeline-item"><div class="timeline-date">هذا الشهر</div><div class="timeline-text">رفع وثيقة معرفية جديدة بواسطة بسام المجيدي</div></div>
+        <div class="timeline-item"><div class="timeline-date">الشهر الماضي</div><div class="timeline-text">إغلاق مرحلة التخطيط لمشروع "${my[0]?.name||'—'}"</div></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function buildPMProjects() {
+  const partners = [...new Set(PROJECTS.map(p=>p.partner))];
+  const regions  = [...new Set(PROJECTS.map(p=>p.region))];
+  const managers = [...new Set(PROJECTS.map(p=>p.manager))];
+  const tracks   = [...new Set(PROJECTS.map(p=>p.track))];
+  return `<div class="view" id="pm-projects">
+    <div class="section-header">
+      <div class="section-title">قائمة مشاريع مركز نهج العملي</div>
+      <div class="section-sub">جميع المشاريع من 2021 إلى 2026</div>
+    </div>
+    <div class="table-container">
+      <div class="table-header">
+        <span class="table-title">المشاريع الكاملة (${PROJECTS.length})</span>
+        <div class="table-controls">
+          <input class="search-input" placeholder="🔍 بحث..." oninput="filterProjects()" id="proj-search">
+          <select class="filter-select" onchange="filterProjects()" id="filt-partner"><option value="">كل الشركاء</option>${partners.map(p=>`<option>${p}</option>`).join('')}</select>
+          <select class="filter-select" onchange="filterProjects()" id="filt-region"><option value="">كل المناطق</option>${regions.map(r=>`<option>${r}</option>`).join('')}</select>
+          <select class="filter-select" onchange="filterProjects()" id="filt-manager"><option value="">كل المدراء</option>${managers.map(m=>`<option>${m}</option>`).join('')}</select>
+          <select class="filter-select" onchange="filterProjects()" id="filt-track"><option value="">كل المسارات</option>${tracks.map(t=>`<option>${t}</option>`).join('')}</select>
+          <select class="filter-select" onchange="filterProjects()" id="filt-status">
+            <option value="">كل الحالات</option>
+            <option value="active">نشط</option><option value="completed">منجز</option>
+            <option value="delayed">متأخر</option><option value="pending">معلق</option><option value="suspended">موقوف</option>
+          </select>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="data-table">
+          <thead><tr>
+            <th onclick="sortTable('name')">اسم المشروع ⇅</th>
+            <th onclick="sortTable('partner')">الشريك ⇅</th>
+            <th onclick="sortTable('region')">المنطقة ⇅</th>
+            <th onclick="sortTable('manager')">مدير المشروع ⇅</th>
+            <th onclick="sortTable('track')">المسار ⇅</th>
+            <th onclick="sortTable('amount')">المبلغ ⇅</th>
+            <th onclick="sortTable('year')">السنة ⇅</th>
+            <th>الإنجاز</th>
+            <th onclick="sortTable('status')">الحالة ⇅</th>
+          </tr></thead>
+          <tbody id="proj-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>`;
+}
+
+function buildPMMyProjects() {
+  return `<div class="view" id="pm-myprojects">
+    <div class="section-header">
+      <div class="section-title">مشاريعي هذا العام</div>
+      <div class="section-sub">المشاريع المسندة إليك في عام 2025</div>
+    </div>
+    <div id="my-proj-content"></div>
+  </div>`;
+}
+
+function buildPMSpeed() {
+  return `<div class="view" id="pm-speed">
+    <div class="section-header">
+      <div class="section-title">مقياس سرعة الإنجاز</div>
+      <div class="section-sub">حساب معدل إنجاز العمل من تاريخ التسليم حتى اللحظة</div>
+    </div>
+    <div id="speed-content"></div>
+  </div>`;
+}
+
+function buildPMKM() {
+  const typeMap = { 'دليل':'type-guide','تقرير':'type-report','نموذج':'type-template','بحث':'type-research','أداة':'type-tool','تدريب':'type-training' };
+  return `<div class="view" id="pm-km">
+    <div class="section-header">
+      <div class="section-title">بوابة المعرفة</div>
+      <div class="section-sub">المنتجات والتقارير المعرفية من بسام المجيدي</div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card blue"><div class="stat-label">إجمالي المنتجات</div><div class="stat-value">${KM_PRODUCTS.length}</div></div>
+      <div class="stat-card green"><div class="stat-label">إجمالي التحميلات</div><div class="stat-value">${KM_PRODUCTS.reduce((s,p)=>s+p.downloads,0)}</div></div>
+      <div class="stat-card gold"><div class="stat-label">أحدث منتج</div><div class="stat-value" style="font-size:14px">أبريل 2025</div></div>
+    </div>
+    <div class="km-grid">
+      ${KM_PRODUCTS.map(p=>`<div class="km-card"><span class="km-card-type ${typeMap[p.type]||'type-report'}">${p.type}</span><div class="km-card-title">${p.title}</div><div class="km-card-desc">${p.desc}</div><div class="km-card-footer"><span>📅 ${p.date}</span><span>⬇️ ${p.downloads}</span></div></div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function buildPMTools() {
+  const tools = [
+    ['📋','قالب خطة المشروع','نموذج احترافي لتخطيط المشاريع'],
+    ['⚠️','مصفوفة المخاطر','تقييم وإدارة مخاطر المشاريع'],
+    ['📊','تقرير الحالة الأسبوعي','قالب تقرير إنجاز أسبوعي'],
+    ['🗓️','مخطط غانت','جدول زمني تفاعلي للمشاريع'],
+    ['👥','إدارة أصحاب المصلحة','خريطة وتحليل أصحاب المصلحة'],
+    ['✅','قائمة تحقق الجودة','معايير ضمان جودة المخرجات'],
+    ['💡','توثيق الدروس المستفادة','رصد وتوثيق التعلم المؤسسي'],
+    ['📈','مؤشرات الأداء KPIs','تحديد وقياس مؤشرات النجاح'],
+    ['🔄','نموذج التغيير','طلبات وإدارة تغيير نطاق العمل'],
+    ['💰','تتبع الميزانية','رصد الإنفاق مقابل الميزانية'],
+    ['📝','محضر الاجتماع','نموذج توثيق اجتماعات المشروع'],
+    ['🎯','التحقق من الأهداف','التحقق من تحقيق أهداف المشروع'],
+  ];
+  return `<div class="view" id="pm-tools">
+    <div class="section-header"><div class="section-title">أدوات مدير المشروع</div><div class="section-sub">مجموعة الأدوات والموارد المرجعية</div></div>
+    <div class="tools-grid">${tools.map(([i,n,d])=>`<div class="tool-card"><div class="tool-icon">${i}</div><div class="tool-name">${n}</div><div class="tool-desc">${d}</div></div>`).join('')}</div>
+    <div class="chart-box">
+      <div class="chart-box-title">📚 المراجع والموارد</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+        <div class="alert-card alert-info">📖 دليل PMBOK — إدارة المشاريع المهنية</div>
+        <div class="alert-card alert-info">🌐 بوابة المعرفة الحكومية السعودية</div>
+        <div class="alert-card alert-info">📋 معايير رؤية 2030 للمشاريع</div>
+        <div class="alert-card alert-info">🏛️ نموذج نهج العملي للتميز المؤسسي</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ===== KM VIEWS =====
+function buildKMDashboard() {
+  const sorted = [...KM_PRODUCTS].sort((a,b)=>b.downloads-a.downloads);
+  const maxD = sorted[0].downloads;
+  return `<div class="view" id="km-dashboard">
+    <div class="section-header">
+      <div class="section-title">مرحباً، ${currentUser.name} 👋</div>
+      <div class="section-sub">لوحة تحكم إدارة المعرفة — مركز نهج العملي</div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card blue"><div class="stat-label">إجمالي المنتجات</div><div class="stat-value">${KM_PRODUCTS.length}</div></div>
+      <div class="stat-card green"><div class="stat-label">إجمالي التحميلات</div><div class="stat-value">${KM_PRODUCTS.reduce((s,p)=>s+p.downloads,0)}</div></div>
+      <div class="stat-card gold"><div class="stat-label">مشاريع موثقة</div><div class="stat-value">${PROJECTS.length}</div></div>
+      <div class="stat-card purple"><div class="stat-label">مدراء مشاريع</div><div class="stat-value">3</div></div>
+    </div>
+    <div class="two-col">
+      <div class="chart-box">
+        <div class="chart-box-title">المنتجات حسب النوع</div>
+        <div class="bar-chart">
+          ${['دليل','تقرير','نموذج','بحث','أداة','تدريب'].map((t,i)=>{
+            const c = KM_PRODUCTS.filter(p=>p.type===t).length;
+            const colors = ['#2563eb','#16a34a','#c8922a','#7c3aed','#dc2626','#0891b2'];
+            const h = c ? Math.max(16,c*40) : 4;
+            return `<div class="bar-group"><div class="bar-val">${c}</div><div class="bar" style="height:${h}px;background:${colors[i]}"></div><div class="bar-label">${t}</div></div>`;
+          }).join('')}
+        </div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-box-title">الأكثر تحميلاً</div>
+        ${sorted.slice(0,4).map(p=>`
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <div style="flex:1">
+              <div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:3px">${p.title.substring(0,32)}…</div>
+              <div class="progress-bar" style="width:100%"><div class="progress-fill" style="width:${Math.round(p.downloads/maxD*100)}%"></div></div>
+            </div>
+            <div style="font-size:13px;font-weight:700;color:#2563eb;min-width:28px;text-align:center">${p.downloads}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-box-title">آخر الإضافات المعرفية</div>
+      <div class="timeline">
+        ${KM_PRODUCTS.slice(0,5).map(p=>`<div class="timeline-item"><div class="timeline-date">${p.date}</div><div class="timeline-text">${p.title} — <em>${p.type}</em></div></div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+function buildKMProducts() {
+  const typeMap = { 'دليل':'type-guide','تقرير':'type-report','نموذج':'type-template','بحث':'type-research','أداة':'type-tool','تدريب':'type-training' };
+  return `<div class="view" id="km-products">
+    <div class="section-header"><div class="section-title">المنتجات المعرفية</div><div class="section-sub">مستودع المعرفة الكاملة</div></div>
+    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+      <input class="search-input" style="width:200px" placeholder="🔍 بحث..." oninput="filterKM()" id="km-search">
+      <select class="filter-select" onchange="filterKM()" id="km-type-filter">
+        <option value="">كل الأنواع</option>
+        ${['دليل','تقرير','نموذج','بحث','أداة','تدريب'].map(t=>`<option>${t}</option>`).join('')}
+      </select>
+    </div>
+    <div class="km-grid" id="km-grid">
+      ${KM_PRODUCTS.map(p=>`<div class="km-card"><span class="km-card-type ${typeMap[p.type]||'type-report'}">${p.type}</span><div class="km-card-title">${p.title}</div><div class="km-card-desc">${p.desc}</div><div class="km-card-footer"><span>📅 ${p.date}</span><span>⬇️ ${p.downloads}</span></div></div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function buildKMUpload() {
+  return `<div class="view" id="km-upload">
+    <div class="section-header"><div class="section-title">رفع محتوى معرفي جديد</div><div class="section-sub">أضف منتجاً معرفياً جديداً إلى مستودع المركز</div></div>
+    <div class="upload-form">
+      <div style="font-size:15px;font-weight:700;margin-bottom:20px;color:var(--text-primary)">بيانات المنتج المعرفي</div>
+      <div class="form-grid">
+        <div class="form-group full"><div class="form-label">عنوان المنتج المعرفي *</div><input class="form-input" placeholder="أدخل عنوان المنتج المعرفي..."></div>
+        <div class="form-group"><div class="form-label">نوع المنتج *</div><select class="form-select"><option>دليل</option><option>تقرير</option><option>نموذج</option><option>بحث</option><option>أداة</option><option>تدريب</option></select></div>
+        <div class="form-group"><div class="form-label">المشروع المرتبط</div><select class="form-select"><option value="">— اختياري —</option>${PROJECTS.map(p=>`<option>${p.name.substring(0,40)}</option>`).join('')}</select></div>
+        <div class="form-group full"><div class="form-label">وصف المنتج *</div><textarea class="form-textarea" placeholder="اكتب وصفاً موجزاً..."></textarea></div>
+        <div class="form-group"><div class="form-label">الكلمات المفتاحية</div><input class="form-input" placeholder="مثال: استراتيجية، أداء..."></div>
+        <div class="form-group"><div class="form-label">مستوى المشاركة</div><select class="form-select"><option>عام — كل الموظفين</option><option>مدراء المشاريع</option><option>إدارة المعرفة فقط</option></select></div>
+        <div class="form-group full"><div class="form-label">رفع الملف</div><div style="border:0.5px dashed var(--border-hover);border-radius:10px;padding:24px;text-align:center;background:var(--bg-secondary);cursor:pointer"><div style="font-size:28px;margin-bottom:8px">📁</div><div style="font-size:13px;color:var(--text-secondary)">اسحب الملف هنا أو <span style="color:#2563eb">انقر للرفع</span></div><div style="font-size:11px;color:var(--text-secondary);margin-top:4px">PDF, DOCX, PPTX, XLSX — حتى 50 ميغابايت</div></div></div>
+      </div>
+      <div style="margin-top:20px;display:flex;gap:10px">
+        <button class="btn-primary" onclick="this.textContent='✅ تم الحفظ بنجاح!'">حفظ ونشر</button>
+        <button style="padding:10px 20px;border:0.5px solid var(--border);border-radius:10px;background:transparent;color:var(--text-secondary);cursor:pointer;font-family:Cairo,sans-serif;font-size:13px" onclick="this.textContent='💾 تم الحفظ كمسودة'">حفظ كمسودة</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function buildKMAnalytics() {
+  const types = ['دليل','تقرير','نموذج','بحث','أداة','تدريب'];
+  const colors = ['#2563eb','#16a34a','#c8922a','#7c3aed','#dc2626','#0891b2'];
+  const maxD = Math.max(...types.map(t=>KM_PRODUCTS.filter(p=>p.type===t).reduce((s,p)=>s+p.downloads,0)));
+  return `<div class="view" id="km-analytics">
+    <div class="section-header"><div class="section-title">تحليلات المعرفة</div><div class="section-sub">نظرة معمقة على استخدام المنتجات المعرفية</div></div>
+    <div class="stats-grid">
+      <div class="stat-card blue"><div class="stat-label">متوسط التحميل/منتج</div><div class="stat-value">${Math.round(KM_PRODUCTS.reduce((s,p)=>s+p.downloads,0)/KM_PRODUCTS.length)}</div></div>
+      <div class="stat-card green"><div class="stat-label">أعلى تحميل</div><div class="stat-value">${Math.max(...KM_PRODUCTS.map(p=>p.downloads))}</div></div>
+      <div class="stat-card gold"><div class="stat-label">منتجات 2025</div><div class="stat-value">${KM_PRODUCTS.filter(p=>p.date.startsWith('2025')).length}</div></div>
+      <div class="stat-card purple"><div class="stat-label">تغطية المشاريع</div><div class="stat-value">75%</div></div>
+    </div>
+    <div class="two-col">
+      <div class="chart-box">
+        <div class="chart-box-title">التحميلات حسب نوع المنتج</div>
+        <div class="bar-chart">
+          ${types.map((t,i)=>{
+            const total = KM_PRODUCTS.filter(p=>p.type===t).reduce((s,p)=>s+p.downloads,0);
+            const h = total ? Math.max(12,Math.round(total/maxD*100)) : 4;
+            return `<div class="bar-group"><div class="bar-val">${total}</div><div class="bar" style="height:${h}px;background:${colors[i]}"></div><div class="bar-label">${t}</div></div>`;
+          }).join('')}
+        </div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-box-title">تغطية المشاريع بالمعرفة</div>
+        <div style="display:grid;gap:10px;margin-top:4px">
+          ${['تطوير القدرات','التميز المؤسسي','إدارة الأداء','التحول الرقمي','الابتكار المؤسسي'].map((t,i)=>{
+            const pct=[80,60,90,45,30][i];
+            return `<div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span style="color:var(--text-primary)">${t}</span><span style="color:var(--text-secondary)">${pct}%</span></div><div class="progress-bar" style="width:100%;height:8px"><div class="progress-fill" style="width:${pct}%"></div></div></div>`;
+          }).join('')}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function buildKMTools() {
+  const tools = [
+    ['🗺️','خريطة المعرفة','رسم خريطة المعرفة المؤسسية'],
+    ['🔍','تدقيق المعرفة','تقييم وقياس الأصول المعرفية'],
+    ['📚','قاعدة الممارسات الجيدة','مستودع الممارسات الجيدة'],
+    ['🤝','مجتمعات الممارسة','إدارة مجتمعات التعلم المهني'],
+    ['📐','نموذج نضج المعرفة','قياس مستوى نضج المؤسسة'],
+    ['🔗','ربط المشاريع بالمعرفة','ربط المشاريع بالأصول المعرفية'],
+    ['📊','تقرير فجوات المعرفة','تحليل فجوات المعرفة المؤسسية'],
+    ['🏆','مؤشرات قياس المعرفة','KPIs لإدارة المعرفة'],
+  ];
+  return `<div class="view" id="km-tools">
+    <div class="section-header"><div class="section-title">أدوات إدارة المعرفة</div><div class="section-sub">الأدوات والموارد المتخصصة</div></div>
+    <div class="tools-grid">${tools.map(([i,n,d])=>`<div class="tool-card"><div class="tool-icon">${i}</div><div class="tool-name">${n}</div><div class="tool-desc">${d}</div></div>`).join('')}</div>
+  </div>`;
+}
+
+// ===== DATA INIT =====
+function initData() {
+  if (currentUser?.type === 'pm') {
+    currentProjects = [...PROJECTS];
+    renderProjectsTable(currentProjects);
+    renderMyProjects();
+    renderSpeedCards();
+    drawDonut();
+  }
+}
+
+function drawDonut() {
+  const canvas = document.getElementById('donut-pm');
+  if (!canvas) return;
+  const my = PROJECTS.filter(p => p.manager === currentUser.name);
+  const ctx = canvas.getContext('2d');
+  const counts = {
+    active: my.filter(p=>p.status==='active').length,
+    completed: my.filter(p=>p.status==='completed').length,
+    delayed: my.filter(p=>p.status==='delayed').length,
+    pending: my.filter(p=>p.status==='pending').length,
+    suspended: my.filter(p=>p.status==='suspended').length,
+  };
+  const colors = ['#16a34a','#2563eb','#dc2626','#d97706','#7c3aed'];
+  const vals = Object.values(counts);
+  const total = vals.reduce((s,v)=>s+v,0);
+  if (!total) return;
+  let start = -Math.PI/2;
+  const cx=50, cy=50, r=42, inner=28;
+  vals.forEach((v,i) => {
+    if (!v) return;
+    const angle = (v/total)*Math.PI*2;
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,r,start,start+angle);
+    ctx.closePath();
+    ctx.fillStyle = colors[i];
+    ctx.fill();
+    start += angle;
+  });
+  ctx.beginPath();
+  ctx.arc(cx,cy,inner,0,Math.PI*2);
+  const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  ctx.fillStyle = isDark ? '#1e1e1c' : '#ffffff';
+  ctx.fill();
+}
+
+// ===== RENDER =====
+const statusLabel = { active:'نشط', completed:'منجز', delayed:'متأخر', pending:'معلق', suspended:'موقوف' };
+const statusClass = { active:'s-active', completed:'s-completed', delayed:'s-delayed', pending:'s-pending', suspended:'s-suspended' };
+
+function renderProjectsTable(projects) {
+  const tbody = document.getElementById('proj-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = projects.map(p=>`<tr>
+    <td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.name}</td>
+    <td style="white-space:nowrap">${p.partner}</td>
+    <td>${p.region}</td>
+    <td style="white-space:nowrap">${p.manager}</td>
+    <td style="white-space:nowrap">${p.track}</td>
+    <td style="white-space:nowrap">${(p.amount/1000).toFixed(0)}K ر.س</td>
+    <td>${p.year}</td>
+    <td><div class="progress-bar"><div class="progress-fill" style="width:${p.progress}%"></div></div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px">${p.progress}%</div></td>
+    <td><span class="status-badge ${statusClass[p.status]}"><span class="status-dot"></span>${statusLabel[p.status]}</span></td>
+  </tr>`).join('');
+}
+
+function renderMyProjects() {
+  const myProjs = PROJECTS.filter(p => p.manager === currentUser.name && p.year === 2025);
+  const container = document.getElementById('my-proj-content');
+  if (!container) return;
+  const sc = {};
+  myProjs.forEach(p => sc[p.status] = (sc[p.status]||0)+1);
+  container.innerHTML = `
+    <div class="stats-grid" style="margin-bottom:20px">
+      <div class="stat-card blue"><div class="stat-label">إجمالي مشاريع 2025</div><div class="stat-value">${myProjs.length}</div></div>
+      ${Object.entries(sc).map(([s,c])=>`<div class="stat-card ${s==='active'?'green':s==='delayed'?'red':'blue'}"><div class="stat-label">${statusLabel[s]}</div><div class="stat-value">${c}</div></div>`).join('')}
+    </div>
+    <div style="margin-bottom:12px">
+      <select class="filter-select" onchange="filterMyProjs(this.value)">
+        <option value="">كل الحالات</option>
+        <option value="active">نشط</option><option value="completed">منجز</option>
+        <option value="delayed">متأخر</option><option value="pending">معلق</option>
+      </select>
+    </div>
+    <div class="table-container">
+      <table class="data-table">
+        <thead><tr><th>اسم المشروع</th><th>الشريك</th><th>المسار</th><th>المبلغ</th><th>الإنجاز</th><th>الحالة</th></tr></thead>
+        <tbody id="my-proj-tbody">${renderMyProjRows(myProjs)}</tbody>
+      </table>
+    </div>`;
+}
+
+function renderMyProjRows(rows) {
+  return rows.map(p=>`<tr>
+    <td>${p.name}</td><td>${p.partner}</td><td>${p.track}</td>
+    <td>${(p.amount/1000).toFixed(0)}K ر.س</td>
+    <td><div class="progress-bar"><div class="progress-fill" style="width:${p.progress}%"></div></div><span style="font-size:11px;color:var(--text-secondary)">${p.progress}%</span></td>
+    <td><span class="status-badge ${statusClass[p.status]}"><span class="status-dot"></span>${statusLabel[p.status]}</span></td>
+  </tr>`).join('');
+}
+
+function filterMyProjs(status) {
+  const rows = PROJECTS.filter(p => p.manager === currentUser.name && p.year === 2025 && (!status||p.status===status));
+  const tbody = document.getElementById('my-proj-tbody');
+  if (tbody) tbody.innerHTML = renderMyProjRows(rows);
+}
+
+function renderSpeedCards() {
+  const container = document.getElementById('speed-content');
+  if (!container) return;
+  const myProjs = PROJECTS.filter(p => p.manager === currentUser.name && p.status === 'active');
+  const today = new Date('2026-04-18');
+  container.innerHTML = `
+    <div class="alert-card alert-info" style="margin-bottom:20px">ℹ️ تُحسب سرعة الإنجاز بقسمة نسبة الإنجاز على عدد الأيام المنقضية × 100</div>
+    <div class="speed-grid">
+      ${myProjs.map(p=>{
+        const days = Math.round((today - new Date(p.start))/(1000*60*60*24));
+        const speed = days>0 ? (p.progress/days*100).toFixed(2) : 0;
+        const sn = parseFloat(speed);
+        const cls = sn>=0.5?'speed-fast':sn>=0.2?'speed-med':'speed-slow';
+        const lbl = sn>=0.5?'🟢 سريع':sn>=0.2?'🟡 متوسط':'🔴 بطيء';
+        const pct = Math.min(100,sn*200);
+        return `<div class="speed-card">
+          <div class="speed-card-header"><div class="speed-proj-name">${p.name.substring(0,28)}…</div><span class="status-badge s-active"><span class="status-dot"></span>نشط</span></div>
+          <div class="speed-value" style="color:${sn>=0.5?'#16a34a':sn>=0.2?'#d97706':'#dc2626'}">${speed}</div>
+          <div class="speed-label">نقطة إنجاز / 100 يوم — ${lbl}</div>
+          <div style="font-size:11px;color:var(--text-secondary);margin-top:4px">${days} يوم منذ البداية — الإنجاز: ${p.progress}%</div>
+          <div class="speed-meter"><div class="speed-fill ${cls}" style="width:${pct}%"></div></div>
+        </div>`;
+      }).join('')}
+    </div>`;
+}
+
+// ===== FILTER & SORT =====
+function filterProjects() {
+  const search = (document.getElementById('proj-search')?.value||'').toLowerCase();
+  const partner = document.getElementById('filt-partner')?.value||'';
+  const region  = document.getElementById('filt-region')?.value||'';
+  const manager = document.getElementById('filt-manager')?.value||'';
+  const track   = document.getElementById('filt-track')?.value||'';
+  const status  = document.getElementById('filt-status')?.value||'';
+  currentProjects = PROJECTS.filter(p=>
+    (!search||p.name.includes(search)||p.partner.includes(search))&&
+    (!partner||p.partner===partner)&&(!region||p.region===region)&&
+    (!manager||p.manager===manager)&&(!track||p.track===track)&&
+    (!status||p.status===status));
+  renderProjectsTable(currentProjects);
+}
+
+function sortTable(field) {
+  if (sortField===field) sortAsc=!sortAsc; else { sortField=field; sortAsc=true; }
+  currentProjects.sort((a,b)=>sortAsc?(a[field]>b[field]?1:-1):(a[field]<b[field]?1:-1));
+  renderProjectsTable(currentProjects);
+}
+
+function filterKM() {
+  const search = (document.getElementById('km-search')?.value||'').toLowerCase();
+  const type   = document.getElementById('km-type-filter')?.value||'';
+  const filtered = KM_PRODUCTS.filter(p=>(!search||p.title.includes(search)||p.desc.includes(search))&&(!type||p.type===type));
+  const typeMap = { 'دليل':'type-guide','تقرير':'type-report','نموذج':'type-template','بحث':'type-research','أداة':'type-tool','تدريب':'type-training' };
+  const grid = document.getElementById('km-grid');
+  if (grid) grid.innerHTML = filtered.map(p=>`<div class="km-card"><span class="km-card-type ${typeMap[p.type]||'type-report'}">${p.type}</span><div class="km-card-title">${p.title}</div><div class="km-card-desc">${p.desc}</div><div class="km-card-footer"><span>📅 ${p.date}</span><span>⬇️ ${p.downloads}</span></div></div>`).join('');
+}
+
+// ===== INIT PAGE =====
+document.querySelectorAll('.page').forEach(p=>{ p.style.display='none'; p.classList.remove('active'); });
+const landing = document.getElementById('page-landing');
+landing.classList.add('active');
+landing.style.display='flex';
+landing.style.flexDirection='column';
+landing.style.alignItems='center';
+landing.style.justifyContent='center';
+</script>
+</body>
+</html>
